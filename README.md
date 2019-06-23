@@ -1,6 +1,6 @@
 MC2PD - Microservice Communication Critical Path Discovery
 --------------
-[![Build Status](https://travis-ci.org/eduardomioto/backend-sandboxes.svg?branch=master)](https://travis-ci.org/eduardomioto/backend-sandboxes)
+[![Build Status](https://travis-ci.org/eduardomioto/mc2pd-engine.svg?branch=master)](https://travis-ci.org/eduardomioto/mc2pd-engine)
 
 ##### Introduction
 Technologies Involved 
