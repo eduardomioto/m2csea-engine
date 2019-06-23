@@ -1,0 +1,10 @@
+digraph mcpd_architecture {
+
+       size="10,5"
+       node [shape = circle];
+
+        consul -> rest_fare [ label = ":8090 (B)" ]
+        consul -> rest_order [ label = ":8093 (B)" ]
+        consul -> rest_postalcode [ label = ":3000 (B)" ]
+        consul -> finder [ label = ":10001 (B)" ]
+}

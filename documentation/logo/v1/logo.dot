@@ -1,0 +1,16 @@
+digraph mc2pd_logo {
+        rankdir=LR;
+        node [shape = circle];
+
+        M -> C
+        C -> 2
+        2 -> P
+        P -> D
+
+        "M" [shape=circle, style=filled, fillcolor=gray34, fontcolor=white]
+        "C" [shape=circle, style=filled, fillcolor=gray48, fontcolor=white]
+        "2" [shape=circle, style=filled, fillcolor=gray70, fontcolor=chartreuse]
+        "P" [shape=circle, style=filled, fillcolor=gray84]
+        "D" [shape=circle, style=filled, fillcolor=gray93]
+
+}

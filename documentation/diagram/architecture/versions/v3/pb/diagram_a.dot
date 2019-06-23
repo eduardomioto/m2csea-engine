@@ -1,0 +1,12 @@
+digraph mcpd_architecture {
+
+       size="10,5"
+       node [shape = circle];
+
+        rest_order -> consul [ label = ":8500 (A)"]
+        rest_access_manager -> consul [ label = ":8500 (A)"]
+        rest_fare -> consul [ label = ":8500 (A)"]
+        rest_postalcode -> consul [ label = ":8500 (A)"]
+        finder -> consul [ label = ":8500 (A)" ]
+
+}

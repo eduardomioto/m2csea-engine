@@ -1,0 +1,303 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Consul",
+		"_postman_id": "19e8d012-eebd-3ee4-e5fd-1ccc72b555e5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Catalog",
+			"description": "",
+			"item": [
+				{
+					"name": "Datacenters",
+					"request": {
+						"url": "localhost:8500/v1/catalog/datacenters",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Nodes",
+					"request": {
+						"url": "localhost:8500/v1/catalog/nodes",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Nodes - mioto-pc",
+					"request": {
+						"url": "localhost:8500/v1/catalog/nodes/mioto-pc",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Services",
+					"request": {
+						"url": "localhost:8500/v1/catalog/services",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Services - fare-rest",
+					"request": {
+						"url": "localhost:8500/v1/catalog/services/fare-rest",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"url": "localhost:8500/v1/catalog/register",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Datacenter\": \"dc1\",\n  \"ID\": \"40e4a748-2192-161a-0510-9bf59fe950b5\",\n  \"Node\": \"mioto-pc\",\n  \"Address\": \"192.168.10.10\",\n  \"TaggedAddresses\": {\n    \"lan\": \"192.168.10.10\",\n    \"wan\": \"10.0.10.10\"\n  },\n  \"NodeMeta\": {\n    \"somekey\": \"somevalue\"\n  },\n  \"Service\": {\n    \"ID\": \"redis1\",\n    \"Service\": \"redis\",\n    \"Tags\": [\n      \"primary\",\n      \"v1\"\n    ],\n    \"Address\": \"127.0.0.1\",\n    \"Port\": 8000\n  },\n  \"Check\": {\n    \"Node\": \"mioto-pc\",\n    \"CheckID\": \"service:redis1\",\n    \"Name\": \"Redis health check\",\n    \"Notes\": \"Script based health check\",\n    \"Status\": \"passing\",\n    \"ServiceID\": \"redis1\"\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Deregister",
+					"request": {
+						"url": "localhost:8500/v1/catalog/register",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Datacenter\": \"dc1\",\n  \"Node\": \"mioto-pc\",\n  \"CheckID\": \"service:redis1\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Coordinate",
+			"description": "",
+			"item": [
+				{
+					"name": "Coordinate - Datacenters",
+					"request": {
+						"url": "localhost:8500/v1/coordinate/datacenters",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Coordinate - Nodes",
+					"request": {
+						"url": "localhost:8500/v1/coordinate/nodes",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event",
+			"description": "",
+			"item": [
+				{
+					"name": "Event - List",
+					"request": {
+						"url": "localhost:8500/v1/event/list",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"description": "",
+			"item": [
+				{
+					"name": "Health - Node - mioto-pc",
+					"request": {
+						"url": "localhost:8500/v1/health/node/mioto-pc",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Health - Checks - rest-fare",
+					"request": {
+						"url": "localhost:8500/v1/health/checks/rest-fare",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Health - Service - rest-fare",
+					"request": {
+						"url": "localhost:8500/v1/health/service/rest-fare",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Health - State - passing",
+					"request": {
+						"url": "localhost:8500/v1/health//state/passing",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "KV Store",
+			"description": "",
+			"item": [
+				{
+					"name": "KV Store - product-rest",
+					"request": {
+						"url": "localhost:8500/v1/kv/product-rest",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KV Store - fare-rest",
+					"request": {
+						"url": "localhost:8500/v1/kv/fare-rest",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KV Store",
+					"request": {
+						"url": "localhost:8500/v1/kv/my-key",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KV Store - fare-rest",
+					"request": {
+						"url": "localhost:8500/v1/kv/fare-rest",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dependencies\" : {\n   \t\t\"postalcode-rest\": {\n   \t\t\t\"version\" : \"1\"\n   \t\t}\n   \t}\t\t\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KV Store - product-rest",
+					"request": {
+						"url": "localhost:8500/v1/kv/product-rest",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dependencies\" : {\n   \t\t\"fare-rest\": {\n   \t\t\t\"version\" : \"1\"\n   \t\t}\n   \t}\t\t\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Status",
+			"description": "",
+			"item": [
+				{
+					"name": "Status - Leader",
+					"request": {
+						"url": "localhost:8500/v1/status/leader",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,21 @@
+digraph finite_state_machine {
+        rankdir=LR;
+        size="10,5"
+        node [shape = circle];
+
+        consul -> rest_product [ label = ":8080", fontcolor=blue ]
+        consul -> rest_fare [ label = ":8090", fontcolor=blue ]
+        consul -> rest_postalcode [ label = ":3000", fontcolor=blue ]
+        consul -> finder [ label = ":10001", fontcolor=blue ]
+
+        rest_product -> consul [ label = "8500", fontcolor=green ]
+        rest_product -> rest_fare [ label = ":8090", fontcolor=red ]
+
+        rest_fare -> consul [ label = ":8500", fontcolor=green ]
+        rest_fare -> rest_postalcode [ label = ":3000", fontcolor=red ]
+
+        rest_postalcode -> consul [ label = ":8500", fontcolor=green ]
+
+        finder -> consul [ label = ":8500", fontcolor=green ]
+        finder -> neo4j [ label = ":7474"  ]
+}

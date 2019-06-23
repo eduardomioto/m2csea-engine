@@ -1,0 +1,7 @@
+digraph mcpd_architecture {
+       rankdir=LR;
+       node [shape = circle];
+
+       finder -> neo4j [ label = ":7474 (D)"]
+       finder -> kv_store_consul [ label = ":8500 (D)" ]
+}
