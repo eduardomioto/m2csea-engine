@@ -1,0 +1,329 @@
+version: '2.1'
+services:
+#
+# Consul > Service Discovery and Repository
+#
+ consul1:
+  image: "progrium/consul"
+  restart: always
+  container_name: "consul1"
+  hostname: "consul1"
+  volumes:
+   - data_volume:/volumes/data/consul
+   - config_volume:/volumes/config/consul
+  ports:
+   - "8300:8300"
+   - "8400:8400"
+   - "8500:8500"
+   - "8600:8600"
+  command: "-server -bootstrap -ui-dir /ui -join=127.0.0.1 "
+#
+# Finder
+#
+ finder:
+  build: ./finder
+  image: eduardomioto/finder
+  ports:
+   - "9090:9090"
+  links:
+   - "consul1"
+   - "neo4j"
+  depends_on:
+   - "consul1"
+   - "neo4j"
+  environment:
+   - "SPRING_PROFILES_ACTIVE=dev"
+#
+# Neo4J > Graph Database
+#
+ neo4j:
+  image: library/neo4j
+  ports:
+   - "7474:7474"
+   - "7687:7687"
+  volumes:
+   - data_volume:/volumes/data/neo4j
+#
+# Visualizer
+#
+ visualizer:
+  build: ./visualizer
+  image: eduardomioto/visualizer
+  ports:
+   - "7000:7000"
+  links:
+   - "consul1"
+  depends_on:
+   - "finder"
+  environment:
+   - "FINDER_URL=finder"
+   - "NGINX_PORT=80"
+#
+# Zipkin
+#
+ zipkin:
+  image: "openzipkin/zipkin"
+  ports:
+   - "9411:9411"
+#
+# Access Manager > Java Microservice
+#
+ accessmanager:
+  build: ./applications/simulated/java/microservice-access-manager-rest
+  image: eduardomioto/rest-access-manager
+  restart: always
+  ports:
+   - "8091:8091"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Rest Basket > Java Microservice
+#
+ basket:
+  build: ./applications/simulated/java/microservice-basket-rest
+  image: eduardomioto/rest-basket
+  restart: always
+  ports:
+   - "8095:8095"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+#
+# Rest Billing > Java Microservice
+#
+ basket:
+  build: ./applications/simulated/java/microservice-billing-rest
+  image: eduardomioto/rest-billing
+  restart: always
+  ports:
+   - "8095:8095"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+#
+# Fare Product > Java Microservice
+#
+ fare:
+  build: ./applications/simulated/java/microservice-fare-rest
+  image: eduardomioto/rest-fare
+  restart: always
+  ports:
+   - "8090:8090"
+  links:
+   - "consul1"
+  environment:
+   - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Inventory > Java Microservice
+#
+ inventory:
+  build: ./applications/simulated/java/microservice-inventory-rest
+  image: eduardomioto/rest-inventory
+  restart: always
+  ports:
+   - "8092:8092"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Order > Java Microservice
+#
+ order:
+  build: ./applications/simulated/java/microservice-order-rest
+  image: eduardomioto/rest-order
+  restart: always
+  ports:
+   - "8093:8093"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Product > Java Microservice
+#
+ product:
+  build: ./applications/simulated/java/microservice-product-rest
+  image: eduardomioto/rest-product
+  restart: always
+  ports:
+   - "8080:8080"
+  depends_on:
+   - "consul1"
+   - "fare"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+
+#
+# User Manager > Java Microservice
+#
+ usermanager:
+  build: ./applications/simulated/java/microservice-user-manager-rest
+  image: eduardomioto/rest-user-manager
+  restart: always
+  ports:
+   - "8094:8094"
+  links:
+   - "consul1"
+  depends_on:
+   - "consul1"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Rest Newsletter > Java Microservice
+#
+ newsletter:
+  build: ./rest-newsletter
+  image: eduardomioto/rest-newsletter
+  restart: always
+  ports:
+   - "3004:3004"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Banner > Node Microservice
+#
+ banner:
+  build: ./rest-banner
+  image: eduardomioto/rest-banner
+  restart: always
+  ports:
+   - "3006:3006"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Billing > Node Microservice
+#
+ billing:
+  build: ./rest-billing
+  image: eduardomioto/rest-billing
+  restart: always
+  ports:
+   - "3001:3001"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Calendar > Node Microservice
+#
+ calendar:
+  build: ./rest-calendar
+  image: eduardomioto/rest-calendar
+  restart: always
+  ports:
+   - "3002:3002"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Category > Node Microservice
+#
+ category:
+  build: ./rest-category
+  image: eduardomioto/rest-category
+  restart: always
+  ports:
+   - "3007:3007"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Mail-Relay > Node Microservice
+#
+ mailrelay:
+  build: ./rest-mail-relay
+  image: eduardomioto/rest-mail-relay
+  restart: always
+  ports:
+   - "3003:3003"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Postal Code > Microservice
+#
+ postalcode:
+  build: ./rest-postalcode
+  image: eduardomioto/rest-postalcode
+  restart: always
+  ports:
+   - "3000:3000"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   CONSUL_URL: consul1
+#
+# Rest Supplier > Node Microservice
+#
+ supplier:
+  build: ./rest-supplier
+  image: eduardomioto/rest-supplier
+  restart: always
+  ports:
+   - "3010:3010"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   - CONSUL_URL: consul1
+#
+# Rest Benefits > Node Microservice
+#
+ benefits:
+  build: ./rest-benefits
+  image: eduardomioto/rest-benefits
+  restart: always
+  ports:
+   - "3009:3009"
+  links:
+   - "consul1"
+  depends_on:
+   - consul1
+  environment:
+   CONSUL_URL: consul1
+volumes:
+ data_volume:
+ config_volume:
