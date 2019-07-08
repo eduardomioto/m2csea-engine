@@ -9,8 +9,8 @@ services:
   container_name: "consul1"
   hostname: "consul1"
   volumes:
-   - data_volume:/volumes/data/consul
-   - config_volume:/volumes/config/consul
+   - ./volumes/consul/data:/volumes/data/consul
+   - ./volumes/consul/config:/volumes/config/consul
   ports:
    - "8300:8300"
    - "8400:8400"
@@ -26,7 +26,10 @@ services:
    - "7474:7474"
    - "7687:7687"
   volumes:
-   - data_volume:/volumes/data/neo4j
+   - /volumes/neo4j/:/data/dbms
+#
+# Zipkin > Open Tracing
+#
  zipkin:
   image: "openzipkin/zipkin"
   ports:
@@ -40,13 +43,3 @@ services:
     - 80:80
   depends_on:
     - zipkin
-# mysql:
-#  image: mysql:5.6.26
-#  environment:
-#   - MYSQL_ROOT_PASSWORD=admin
-#   - MYSQL_DATABASE=mc2pd
-#  ports:
-#    - "3306:3306"
-volumes:
- data_volume:
- config_volume:

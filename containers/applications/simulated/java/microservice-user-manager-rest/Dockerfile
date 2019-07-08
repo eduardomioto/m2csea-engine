@@ -5,8 +5,6 @@ ENV JAVA_HOME              /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH                   $PATH:$JAVA_HOME/bin
 
 WORKDIR /app
-COPY app/app.jar /app/app.jar
-
-ONBUILD COPY app.jar /app/app.jar
+COPY ./microservice-user-manager-rest-1.0.0.jar /app/app.jar
 
 CMD ["/bin/sh", "-c", "java -Dspring.profiles.active=dev -jar /app/app.jar"]

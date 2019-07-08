@@ -10,7 +10,7 @@ services:
   hostname: "consul1"
   volumes:
    - ./volumes/consul/data:/volumes/data/consul
-   - ./volumes/consul/config/:/volumes/config/consul
+   - ./volumes/consul/config:/volumes/config/consul
   ports:
    - "8300:8300"
    - "8400:8400"

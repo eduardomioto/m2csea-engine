@@ -1,0 +1,145 @@
+version: '2.1'
+services:
+#
+# Service - Consul > Service Discovery and Repository
+#
+ consul:
+  image: "progrium/consul"
+  restart: always
+  container_name: "consul"
+  hostname: "consul"
+  volumes:
+   - ./volumes/consul/data:/volumes/data/consul
+   - ./volumes/consul/config:/volumes/config/consul
+  ports:
+   - "8300:8300"
+   - "8400:8400"
+   - "8500:8500"
+   - "8600:8600"
+  command: "-server -bootstrap -ui-dir /ui -join=127.0.0.1 "
+#
+# Simulated Microservices - Access Manager > Java Microservice
+#
+ accessmanager:
+  build: ./applications/simulated/java/microservice-access-manager-rest
+  image: eduardomioto/rest-access-manager
+  restart: always
+  ports:
+   - "8091:8091"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices -  Basket > Java Microservice
+#
+ basket:
+  build: ./applications/simulated/java/microservice-basket-rest
+  image: eduardomioto/rest-basket
+  restart: always
+  ports:
+   - "8095:8095"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices -  Billing > Java Microservice
+#
+ basket:
+  build: ./applications/simulated/java/microservice-billing-rest
+  image: eduardomioto/rest-billing
+  restart: always
+  ports:
+   - "8095:8095"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices - Fare Product > Java Microservice
+#
+ fare:
+  build: ./applications/simulated/java/microservice-fare-rest
+  image: eduardomioto/rest-fare
+  restart: always
+  ports:
+   - "8090:8090"
+  links:
+   - "consul"
+  environment:
+   - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices - Inventory > Java Microservice
+#
+ inventory:
+  build: ./applications/simulated/java/microservice-inventory-rest
+  image: eduardomioto/rest-inventory
+  restart: always
+  ports:
+   - "8092:8092"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices - Order > Java Microservice
+#
+ order:
+  build: ./applications/simulated/java/microservice-order-rest
+  image: eduardomioto/rest-order
+  restart: always
+  ports:
+   - "8093:8093"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+#
+# Simulated Microservices - Product > Java Microservice
+#
+ product:
+  build: ./applications/simulated/java/microservice-product-rest
+  image: eduardomioto/rest-product
+  restart: always
+  ports:
+   - "8080:8080"
+  depends_on:
+   - "consul"
+   - "fare"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
+
+#
+# Simulated Microservices - User Manager > Java Microservice
+#
+ usermanager:
+  build: ./applications/simulated/java/microservice-user-manager-rest
+  image: eduardomioto/rest-user-manager
+  restart: always
+  ports:
+   - "8094:8094"
+  links:
+   - "consul"
+  depends_on:
+   - "consul"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+  mem_limit: 1024m
