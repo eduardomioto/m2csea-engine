@@ -32,7 +32,7 @@ services:
   build: ./applications/specialist-opinion
   image: eduardomioto/specialist-opinion
   ports:
-   - "9001:8080"
+   - "10010:8080"
   links:
    - "consul1"
   depends_on:
