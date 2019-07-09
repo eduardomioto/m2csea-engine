@@ -32,7 +32,7 @@ services:
   build: ./applications/specialist-opinion
   image: eduardomioto/specialist-opinion
   ports:
-   - "10010:8080"
+   - "10050:8080"
   links:
    - "consul"
   depends_on:
@@ -46,7 +46,7 @@ services:
   build: ./applications/architecture-probe
   image: eduardomioto/architecture-probe
   ports:
-   - "9001:8080"
+   - "10051:8080"
   links:
    - "consul"
   depends_on:
