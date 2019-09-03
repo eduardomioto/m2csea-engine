@@ -1,3 +1,3 @@
 cd $HOME/m2csea-specialist-opinion
 mvn clean install
-# $HOME/mc2pd-engine/containers/applications/specialist-opinion/
+cp $HOME/m2csea-specialist-opinion/target/specialist-opinion-1.0.0.jar  $HOME/m2csea-engine/containers/applications/specialist-opinion/
