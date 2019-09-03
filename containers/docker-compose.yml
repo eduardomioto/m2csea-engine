@@ -80,7 +80,7 @@ services:
    - "7474:7474"
    - "7687:7687"
   volumes:
-   - /volumes/neo4j/:/data/dbms
+   - ./volumes/neo4j/:/data/dbms
 #
 # Service - Zipkin > Open Tracing
 #
