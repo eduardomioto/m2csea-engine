@@ -1,4 +1,5 @@
 cd $HOME/m2csea-java-sample-projects/
+git pull
 mvn clean install
 
 cp /home/admin/m2csea-java-sample-projects/microservice-access-manager-rest/target/microservice-access-manager-rest-1.0.0.jar $HOME/m2csea-engine/containers/applications/simulated/java/microservice-access-manager-rest/
