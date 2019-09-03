@@ -224,6 +224,7 @@ architecture-probe:
  newsletter:
   build: ./applications/simulated/node/microservice-newsletter-rest
   image: eduardomioto/rest-newsletter
+  restart: on-failure
   ports:
    - "3004:3004"
   links:
@@ -238,6 +239,7 @@ architecture-probe:
  banner:
   build: ./applications/simulated/node/microservice-banner-rest
   image: eduardomioto/rest-banner
+  restart: on-failure
   ports:
    - "3006:3006"
   links:
@@ -294,6 +296,7 @@ architecture-probe:
  postalcode:
   build: ./applications/simulated/node/microservice-postalcode-rest
   image: eduardomioto/rest-postalcode
+  restart: on-failure
   ports:
    - "3000:3000"
   links:
@@ -322,6 +325,7 @@ architecture-probe:
  benefits:
   build: ./applications/simulated/node/microservice-benefits-rest
   image: eduardomioto/rest-benefits
+  restart: on-failure
   ports:
    - "3009:3009"
   links:
