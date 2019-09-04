@@ -1,361 +1,302 @@
-version: '2.1'
+version: '3.2'
 services:
-#  
-# MC2PD - Finder
-#
-finder:
-  build: ./applications/finder
-  image: eduardomioto/finder
-  container_name: finder
-  restart: always
-  ports:
-   - "9090:9090"
-  links:
-   - "consul"
-   - "neo4j"
-  depends_on:
-   - "consul"
-   - "neo4j"
-  environment:
-   - "SPRING_PROFILES_ACTIVE=dev"
-#
-# M2CSEA - Visualizer
-#
-visualizer:
-  build: ./applications/visualizer
-  image: eduardomioto/visualizer
-  container_name: visualizer
-  restart: on-failure
-  ports:
-   - "7000:7000"
-  links:
-   - "consul"
-  depends_on:
-   - "finder"
-  environment:
-   - "FINDER_URL=finder"
-   - "NGINX_PORT=80"
-#
-# M2CSEA - Specialist Opinion
-#
-specialist_opinion:
-  build: ./applications/specialist-opinion
-  image: eduardomioto/specialist-opinion
-  container_name: specialist_opinion
-  restart: on-failure
-  ports:
-   - "19092:19092"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-   - "SPRING_PROFILES_ACTIVE=dev"
-#   
-# M2CSEA - Architecture Probe
-#
-architecture_probe:
-  build: ./applications/architecture-probe
-  image: eduardomioto/architecture-probe
-  container_name: architecture_probe
-  restart: on-failure
-  ports:
-   - "19091:19091"
-  links:
-   - "consul"
-  depends_on:
-   - "finder"
-  environment:
-   - "FINDER_URL=finder"
-   - "NGINX_PORT=80"
-#
-# Service - Consul > Service Discovery and Repository
-#
- consul:
-  image: "progrium/consul"
-  restart: always
-  container_name: consul
-  hostname: "consul"
-  volumes:
-   - ./volumes/consul/data:/volumes/data/consul
-   - ./volumes/consul/config:/volumes/config/consul
-  ports:
-   - "8300:8300"
-   - "8400:8400"
-   - "8500:8500"
-   - "8600:8600"
-  command: "-server -bootstrap -ui-dir /ui -join=127.0.0.1 "
-#
-# Service - Neo4J > Graph Database
-#
- neo4j:
-  image: library/neo4j
-  container_name: neo4j
-  ports:
-   - "7474:7474"
-   - "7687:7687"
-  volumes:
-   - ./volumes/neo4j/:/data/dbms
-#
-# Service - Zipkin > Open Tracing
-#
- zipkin:
-  image: "openzipkin/zipkin"
-  container_name: zipkin
-  ports:
-   - "9411:9411"
-#
-# Simulated Microservices - Access Manager > Java Microservice
-#
- access_manager:
-  build: ./applications/simulated/java/microservice-access-manager-rest
-  image: eduardomioto/rest-access-manager
-  container_name: access_manager
-  restart: on-failure
-  ports:
-   - "10001:10001"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices -  Basket > Java Microservice
-#
- basket:
-  build: ./applications/simulated/java/microservice-basket-rest
-  image: eduardomioto/rest-basket
-  container_name: basket
-  restart: on-failure
-  ports:
-   - "10003:10003"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices -  Billing > Java Microservice
-#
- billing:
-  build: ./applications/simulated/java/microservice-billing-rest
-  image: eduardomioto/rest-billing
-  container_name: billing
-  ports:
-   - "10005:10005"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices - Fare Product > Java Microservice
-#
- fare:
-  build: ./applications/simulated/java/microservice-fare-rest
-  image: eduardomioto/rest-fare
-  container_name: fare
-  ports:
-   - "10008:10008"
-  links:
-   - "consul"
-  environment:
-   - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices - Inventory > Java Microservice
-#
- inventory:
-  build: ./applications/simulated/java/microservice-inventory-rest
-  image: eduardomioto/rest-inventory
-  container_name: inventory
-  ports:
-   - "10009:10009"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices - Order > Java Microservice
-#
- order:
-  build: ./applications/simulated/java/microservice-order-rest
-  image: eduardomioto/rest-order
-  container_name: order
-  ports:
-   - "10012:10012"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices - Product > Java Microservice
-#
- product:
-  build: ./applications/simulated/java/microservice-product-rest
-  image: eduardomioto/rest-product
-  container_name: product
-  ports:
-   - "10015:10015"
-  depends_on:
-   - "consul"
-   - "fare"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-
-#
-# Simulated Microservices - User Manager > Java Microservice
-#
- user_manager:
-  build: ./applications/simulated/java/microservice-user-manager-rest
-  image: eduardomioto/rest-user-manager
-  container_name: user_manager
-  ports:
-   - "10017:10017"
-  links:
-   - "consul"
-  depends_on:
-   - "consul"
-  environment:
-    - "SPRING_PROFILES_ACTIVE=dev"
-  mem_limit: 1024m
-#
-# Simulated Microservices -  Newsletter > Java Microservice
-#
- newsletter:
-  build: ./applications/simulated/node/microservice-newsletter-rest
-  image: eduardomioto/rest-newsletter
-  container_name: newsletter
-  restart: on-failure
-  ports:
-   - "3004:3004"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-    CONSUL_URL: consul
-#
-# Simulated Microservices -  Banner > NodeJS Microservice
-#
- banner:
-  build: ./applications/simulated/node/microservice-banner-rest
-  image: eduardomioto/rest-banner
-  container_name: banner
-  restart: on-failure
-  ports:
-   - "3006:3006"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Calendar > NodeJS Microservice
-#
- calendar:
-  build: ./applications/simulated/node/microservice-calendar-rest
-  image: eduardomioto/rest-calendar
-  container_name: calendar
-  ports:
-   - "3002:3002"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Category > NodeJS Microservice
-#
- category:
-  build: ./applications/simulated/node/microservice-category-rest
-  image: eduardomioto/rest-category
-  container_name: category
-  ports:
-   - "3007:3007"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Mail-Relay > NodeJS Microservice
-#
- mail_relay:
-  build: ./applications/simulated/node/microservice-mail-relay-rest
-  image: eduardomioto/rest-mail-relay
-  container_name: mail_relay
-  ports:
-   - "3003:3003"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Postal Code > NodeJS Microservice
-#
- postal_code:
-  build: ./applications/simulated/node/microservice-postalcode-rest
-  image: eduardomioto/rest-postalcode
-  container_name: postal_code
-  restart: on-failure
-  ports:
-   - "3000:3000"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Supplier > NodeJS Microservice
-#
- supplier:
-  build: ./applications/simulated/node/microservice-supplier-rest
-  image: eduardomioto/rest-supplier
-  container_name: supplier
-  ports:
-   - "3010:3010"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
-#
-# Simulated Microservices -  Benefits > NodeJS Microservice
-#
- benefits:
-  build: ./applications/simulated/node/microservice-benefits-rest
-  image: eduardomioto/rest-benefits
-  container_name: benefits
-  restart: on-failure
-  ports:
-   - "3009:3009"
-  links:
-   - "consul"
-  depends_on:
-   - consul
-  environment:
-   CONSUL_URL: consul
+  finder:
+   build: ./applications/finder
+   image: eduardomioto/finder
+   container_name: finder
+   restart: always
+   ports:
+     - 9090:9090
+   links:
+     - "consul"
+     - "neo4j"
+   depends_on:
+     - "consul"
+     - "neo4j"
+   environment:
+     - "SPRING_PROFILES_ACTIVE=dev"
+  visualizer:
+    build:
+      context: ./applications/visualizer
+    image: eduardomioto/visualizer
+    container_name: visualizer
+    restart: on-failure
+    ports:
+      - 7000:7000
+    links:
+      - "consul"
+    depends_on:
+      - "finder"
+    environment:
+      - "FINDER_URL=finder"
+      - "NGINX_PORT=80"
+  specialist_opinion:
+    build:
+      context: ./applications/specialist-opinion
+    image: eduardomioto/specialist-opinion
+    container_name: specialist_opinion
+    restart: on-failure
+    ports:
+      - 19092:19092
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  architecture_probe:
+    build: 
+      context: ./applications/architecture-probe
+    image: eduardomioto/architecture-probe
+    container_name: architecture_probe
+    restart: on-failure
+    ports:
+      - 19091:19091
+    links:
+      - "consul"
+    depends_on:
+      - "finder"
+    environment:
+      - "FINDER_URL=finder"
+      - "NGINX_PORT=80"
+  consul:
+    image: "progrium/consul"
+    restart: always
+    container_name: consul
+    hostname: "consul"
+    volumes:
+      - ./volumes/consul/data:/volumes/data/consul
+      - ./volumes/consul/config:/volumes/config/consul
+    ports:
+      - "8300:8300"
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+    command: "-server -bootstrap -ui-dir /ui -join=127.0.0.1 "
+  neo4j:
+    image: library/neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./volumes/neo4j/:/data/dbms
+  zipkin:
+    image: "openzipkin/zipkin"
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+  access_manager:
+    build: 
+      context: ./applications/simulated/java/microservice-access-manager-rest
+    image: eduardomioto/rest-access-manager
+    container_name: access_manager
+    restart: on-failure
+    ports:
+      - "10001:10001"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  basket:
+    build: 
+      context: ./applications/simulated/java/microservice-basket-rest
+    image: eduardomioto/rest-basket
+    container_name: basket
+    restart: on-failure
+    ports:
+      - "10003:10003"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  billing:
+    build: 
+      context: ./applications/simulated/java/microservice-billing-rest
+    image: eduardomioto/rest-billing
+    container_name: billing
+    ports:
+      - "10005:10005"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  fare:
+    build:
+      context: ./applications/simulated/java/microservice-fare-rest
+    image: eduardomioto/rest-fare
+    container_name: fare
+    ports:
+      - "10008:10008"
+    links:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  inventory:
+    build: 
+      context: ./applications/simulated/java/microservice-inventory-rest
+    image: eduardomioto/rest-inventory
+    container_name: inventory
+    ports:
+      - "10009:10009"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  order:
+    build: 
+      context: ./applications/simulated/java/microservice-order-rest
+    image: eduardomioto/rest-order
+    container_name: order
+    ports:
+      - "10012:10012"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  product:
+    build: 
+      context: ./applications/simulated/java/microservice-product-rest
+    image: eduardomioto/rest-product
+    container_name: product
+    ports:
+      - "10015:10015"
+    depends_on:
+      - "consul"
+      - "fare"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  user_manager:
+    build: 
+      context: ./applications/simulated/java/microservice-user-manager-rest
+    image: eduardomioto/rest-user-manager
+    container_name: user_manager
+    ports:
+      - "10017:10017"
+    links:
+      - "consul"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  newsletter:
+    build: 
+      context: ./applications/simulated/node/microservice-newsletter-rest
+    image: eduardomioto/rest-newsletter
+    container_name: newsletter
+    restart: on-failure
+    ports:
+      - "3004:3004"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  banner:
+    build: 
+      context: ./applications/simulated/node/microservice-banner-rest
+    image: eduardomioto/rest-banner
+    container_name: banner
+    restart: on-failure
+    ports:
+      - "3006:3006"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  calendar:
+    build: 
+      context: ./applications/simulated/node/microservice-calendar-rest
+    image: eduardomioto/rest-calendar
+    container_name: calendar
+    ports:
+      - "3002:3002"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  category:
+    build: 
+      context: ./applications/simulated/node/microservice-category-rest
+    image: eduardomioto/rest-category
+    container_name: category
+    ports:
+      - "3007:3007"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  mail_relay:
+    build: 
+      context: ./applications/simulated/node/microservice-mail-relay-rest
+    image: eduardomioto/rest-mail-relay
+    container_name: mail_relay
+    ports:
+      - "3003:3003"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  postal_code:
+    build: 
+      context: ./applications/simulated/node/microservice-postalcode-rest
+    image: eduardomioto/rest-postalcode
+    container_name: postal_code
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  supplier:
+    build: 
+      context: ./applications/simulated/node/microservice-supplier-rest
+    image: eduardomioto/rest-supplier
+    container_name: supplier
+    ports:
+      - "3010:3010"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  benefits:
+    build: 
+      context: ./applications/simulated/node/microservice-benefits-rest
+    image: eduardomioto/rest-benefits
+    container_name: benefits
+    restart: on-failure
+    ports:
+      - "3009:3009"
+    links:
+      - "consul"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
 networks:
   default:
     external:
