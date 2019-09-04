@@ -249,7 +249,7 @@ services:
     image: eduardomioto/rest-mail-relay
     container_name: mail_relay
     ports:
-      - "3003:3003"
+      - "3005:3005"
     links:
       - "consul"
     depends_on:
