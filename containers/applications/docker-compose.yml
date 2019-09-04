@@ -6,6 +6,7 @@ services:
 finder:
   build: ./applications/finder
   image: eduardomioto/finder
+  container_name: finder
   restart: always
   ports:
    - "9090:9090"
@@ -23,6 +24,7 @@ finder:
 visualizer:
   build: ./applications/visualizer
   image: eduardomioto/visualizer
+  container_name: visualizer
   restart: on-failure
   ports:
    - "7000:7000"
@@ -36,12 +38,13 @@ visualizer:
 #
 # M2CSEA - Specialist Opinion
 #
-specialist-opinion:
+specialist_opinion:
   build: ./applications/specialist-opinion
   image: eduardomioto/specialist-opinion
+  container_name: specialist_opinion
   restart: on-failure
   ports:
-   - "10050:8080"
+   - "19092:19092"
   links:
    - "consul"
   depends_on:
@@ -51,12 +54,13 @@ specialist-opinion:
 #   
 # M2CSEA - Architecture Probe
 #
-architecture-probe:
+architecture_probe:
   build: ./applications/architecture-probe
   image: eduardomioto/architecture-probe
+  container_name: architecture_probe
   restart: on-failure
   ports:
-   - "10051:8080"
+   - "19091:19091"
   links:
    - "consul"
   depends_on:
@@ -70,7 +74,7 @@ architecture-probe:
  consul:
   image: "progrium/consul"
   restart: always
-  container_name: "consul"
+  container_name: consul
   hostname: "consul"
   volumes:
    - ./volumes/consul/data:/volumes/data/consul
@@ -86,6 +90,7 @@ architecture-probe:
 #
  neo4j:
   image: library/neo4j
+  container_name: neo4j
   ports:
    - "7474:7474"
    - "7687:7687"
@@ -96,17 +101,19 @@ architecture-probe:
 #
  zipkin:
   image: "openzipkin/zipkin"
+  container_name: zipkin
   ports:
    - "9411:9411"
 #
 # Simulated Microservices - Access Manager > Java Microservice
 #
- access-manager:
+ access_manager:
   build: ./applications/simulated/java/microservice-access-manager-rest
   image: eduardomioto/rest-access-manager
+  container_name: access_manager
   restart: on-failure
   ports:
-   - "8091:8091"
+   - "10001:10001"
   links:
    - "consul"
   depends_on:
@@ -120,9 +127,10 @@ architecture-probe:
  basket:
   build: ./applications/simulated/java/microservice-basket-rest
   image: eduardomioto/rest-basket
+  container_name: basket
   restart: on-failure
   ports:
-   - "8095:8095"
+   - "10003:10003"
   links:
    - "consul"
   depends_on:
@@ -133,11 +141,12 @@ architecture-probe:
 #
 # Simulated Microservices -  Billing > Java Microservice
 #
- basket:
+ billing:
   build: ./applications/simulated/java/microservice-billing-rest
   image: eduardomioto/rest-billing
+  container_name: billing
   ports:
-   - "8095:8095"
+   - "10005:10005"
   links:
    - "consul"
   depends_on:
@@ -151,8 +160,9 @@ architecture-probe:
  fare:
   build: ./applications/simulated/java/microservice-fare-rest
   image: eduardomioto/rest-fare
+  container_name: fare
   ports:
-   - "8090:8090"
+   - "10008:10008"
   links:
    - "consul"
   environment:
@@ -164,8 +174,9 @@ architecture-probe:
  inventory:
   build: ./applications/simulated/java/microservice-inventory-rest
   image: eduardomioto/rest-inventory
+  container_name: inventory
   ports:
-   - "8092:8092"
+   - "10009:10009"
   links:
    - "consul"
   depends_on:
@@ -179,8 +190,9 @@ architecture-probe:
  order:
   build: ./applications/simulated/java/microservice-order-rest
   image: eduardomioto/rest-order
+  container_name: order
   ports:
-   - "8093:8093"
+   - "10012:10012"
   links:
    - "consul"
   depends_on:
@@ -194,8 +206,9 @@ architecture-probe:
  product:
   build: ./applications/simulated/java/microservice-product-rest
   image: eduardomioto/rest-product
+  container_name: product
   ports:
-   - "8080:8080"
+   - "10015:10015"
   depends_on:
    - "consul"
    - "fare"
@@ -206,11 +219,12 @@ architecture-probe:
 #
 # Simulated Microservices - User Manager > Java Microservice
 #
- user-manager:
+ user_manager:
   build: ./applications/simulated/java/microservice-user-manager-rest
   image: eduardomioto/rest-user-manager
+  container_name: user_manager
   ports:
-   - "8094:8094"
+   - "10017:10017"
   links:
    - "consul"
   depends_on:
@@ -224,6 +238,7 @@ architecture-probe:
  newsletter:
   build: ./applications/simulated/node/microservice-newsletter-rest
   image: eduardomioto/rest-newsletter
+  container_name: newsletter
   restart: on-failure
   ports:
    - "3004:3004"
@@ -239,6 +254,7 @@ architecture-probe:
  banner:
   build: ./applications/simulated/node/microservice-banner-rest
   image: eduardomioto/rest-banner
+  container_name: banner
   restart: on-failure
   ports:
    - "3006:3006"
@@ -254,6 +270,7 @@ architecture-probe:
  calendar:
   build: ./applications/simulated/node/microservice-calendar-rest
   image: eduardomioto/rest-calendar
+  container_name: calendar
   ports:
    - "3002:3002"
   links:
@@ -268,6 +285,7 @@ architecture-probe:
  category:
   build: ./applications/simulated/node/microservice-category-rest
   image: eduardomioto/rest-category
+  container_name: category
   ports:
    - "3007:3007"
   links:
@@ -279,9 +297,10 @@ architecture-probe:
 #
 # Simulated Microservices -  Mail-Relay > NodeJS Microservice
 #
- mailrelay:
+ mail_relay:
   build: ./applications/simulated/node/microservice-mail-relay-rest
   image: eduardomioto/rest-mail-relay
+  container_name: mail_relay
   ports:
    - "3003:3003"
   links:
@@ -293,9 +312,10 @@ architecture-probe:
 #
 # Simulated Microservices -  Postal Code > NodeJS Microservice
 #
- postalcode:
+ postal_code:
   build: ./applications/simulated/node/microservice-postalcode-rest
   image: eduardomioto/rest-postalcode
+  container_name: postal_code
   restart: on-failure
   ports:
    - "3000:3000"
@@ -311,6 +331,7 @@ architecture-probe:
  supplier:
   build: ./applications/simulated/node/microservice-supplier-rest
   image: eduardomioto/rest-supplier
+  container_name: supplier
   ports:
    - "3010:3010"
   links:
@@ -325,6 +346,7 @@ architecture-probe:
  benefits:
   build: ./applications/simulated/node/microservice-benefits-rest
   image: eduardomioto/rest-benefits
+  container_name: benefits
   restart: on-failure
   ports:
    - "3009:3009"
