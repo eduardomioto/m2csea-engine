@@ -196,7 +196,7 @@ services:
     container_name: newsletter
     restart: on-failure
     ports:
-      - "3004:3004"
+      - "10011:10011"
     links:
       - "consul"
     depends_on:
@@ -210,7 +210,7 @@ services:
     container_name: banner
     restart: on-failure
     ports:
-      - "3006:3006"
+      - "10002:10002"
     links:
       - "consul"
     depends_on:
@@ -223,7 +223,7 @@ services:
     image: eduardomioto/rest-calendar
     container_name: calendar
     ports:
-      - "3002:3002"
+      - "10006:10006"
     links:
       - "consul"
     depends_on:
@@ -236,7 +236,7 @@ services:
     image: eduardomioto/rest-category
     container_name: category
     ports:
-      - "3007:3007"
+      - "10007:10007"
     links:
       - "consul"
     depends_on:
@@ -249,7 +249,7 @@ services:
     image: eduardomioto/rest-mail-relay
     container_name: mail_relay
     ports:
-      - "3005:3005"
+      - "10010:10010"
     links:
       - "consul"
     depends_on:
@@ -263,7 +263,7 @@ services:
     container_name: postal_code
     restart: on-failure
     ports:
-      - "3000:3000"
+      - "10013:10013"
     links:
       - "consul"
     depends_on:
@@ -276,7 +276,7 @@ services:
     image: eduardomioto/rest-supplier
     container_name: supplier
     ports:
-      - "3010:3010"
+      - "10016:10016"
     links:
       - "consul"
     depends_on:
@@ -290,7 +290,7 @@ services:
     container_name: benefits
     restart: on-failure
     ports:
-      - "3009:3009"
+      - "10004:10004"
     links:
       - "consul"
     depends_on:
