@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: 'http://localhost:19090/microservices/vision/user/',
+        url: 'http://localhost:19092/microservices/vision/user/',
         dataType: 'json',
         async: false,
         success: function (data) {
