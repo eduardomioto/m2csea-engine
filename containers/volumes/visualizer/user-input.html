@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,9 +6,11 @@
     <link rel="stylesheet" href="css/bars-square.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://seiyria.com/bootstrap-slider/css/bootstrap-slider.css">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -33,23 +35,42 @@
     </div>
 </nav>
 
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6" align="center"><a href="graph-menu.html"><img src="img/graph.svg" width="200"></a><p>Interface Vision</p></div>
-        <div class="col-sm-6" align="center"><a href="user-input.html"><img src="img/user.svg" width="200"></a><p>User Vision</p></div>
+        <div class="col-sm-12">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Microservices</th>
+                    <th>Criticality</th>
+                </tr>
+                </thead>
+                <tbody id="microservicesTable">
+
+
+
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6" align="center"><a href="http://localhost:9411/zipkin/" target="_blank"><img src="img/messages.svg"  width="200"></a><p>Message Vision</p></div>
-        <div class="col-sm-6" align="center"><a href="multi-factor.html"><img src="img/all.svg" width="200"></a><p>Multi-Factor Vision</p></div>
-    </div>
-	 <div class="row">
-        <div class="col-sm-6" align="center"><a href="http://localhost:19090/add" target="_blank"><img src="img/messages.svg"  width="200"></a><p>Finder Sync</p></div>
-    </div>
-</div>
-<script src="//d3plus.org/js/d3.js"></script>
-<script src="//d3plus.org/js/d3plus.js"></script>
-<script src="js/jquery.min.js"></script>
-<script src="js/graph.js"></script>
-<script src="js/bootstrap.min.js"></script>
+
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.barrating.min.js"></script>
+    <script type="text/javascript">
+        $('.square-rating').barrating('show', {
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false
+        });
+    </script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/user-vision.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
+
 </body>
 </html>
