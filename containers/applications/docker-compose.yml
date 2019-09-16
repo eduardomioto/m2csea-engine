@@ -6,7 +6,7 @@ services:
    container_name: finder
    restart: always
    ports:
-     - 9090:9090
+     - 19100:19100
    links:
      - "consul"
      - "neo4j"
@@ -22,7 +22,7 @@ services:
     container_name: visualizer
     restart: on-failure
     ports:
-      - 7000:7000
+      - 7000:80
     links:
       - "consul"
     depends_on:
@@ -297,6 +297,7 @@ services:
       - consul
     environment:
       - CONSUL_URL=consul
+  
 networks:
   default:
     external:
