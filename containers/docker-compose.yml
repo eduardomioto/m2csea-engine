@@ -347,6 +347,9 @@ services:
     build: 
       context: ./applications/telegraf
     container_name: telegraf
+    ports:
+      - 9126:9126
+      - 8094:8094
     image: telegraf
     restart: always
     environment:
@@ -355,7 +358,7 @@ services:
       HOST_ETC: /rootfs/etc
     hostname: localhost
     volumes:
-     - ./volumes/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+     - ./applications/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
      - /var/run/docker.sock:/var/run/docker.sock:ro
      - /sys:/rootfs/sys:ro
      - /proc:/rootfs/proc:ro
