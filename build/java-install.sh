@@ -1,5 +1,37 @@
 cd $HOME/m2csea-java-sample-projects/
 git pull
+
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd  /home/admin/m2csea-java-sample-projects/microservice-access-manager-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-billing-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd  /home/admin/m2csea-java-sample-projects/microservice-delivery-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-fare-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-inventory-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-order-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-product-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-user-manager-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd /home/admin/m2csea-java-sample-projects/microservice-basket-rest/
+mvn clean install sonar:sonar  -Dsonar.host.url=http://localhost:9000 -Dsonar.login=acabd57e73d5c90b2970ceb792790df34993f59a
+
+cd $HOME/m2csea-java-sample-projects/
+
 mvn clean install
 
 cp /home/admin/m2csea-java-sample-projects/microservice-access-manager-rest/target/microservice-access-manager-rest-1.0.0.jar $HOME/m2csea-engine/containers/applications/simulated/java/microservice-access-manager-rest/

@@ -1,9 +1,11 @@
 version: "3"
 services:
   sonarqube:
-    image: sonarqube:6.7.1
+    build:
+      context: ./applications/sonar
     restart: unless-stopped
     container_name: sonarqube
+    command: -Dhttp.proxyHost=proxy.whebdc.com.br -Dhttp.proxyPort=3128 -Dhttp.proxyUser=topologia -Dhttp.proxyPassword=Philips.2017
     environment:
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=v07IGCFCF83Z95NX
@@ -31,4 +33,4 @@ services:
 networks:
   default:
     external:
-      name: m2csea
+      name: ci
