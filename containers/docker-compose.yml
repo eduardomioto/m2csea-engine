@@ -9,6 +9,7 @@ services:
      - 19100:19100
    links:
      - "consul"
+     - "mysql"
      - "neo4j"
    depends_on:
      - "consul"
@@ -25,6 +26,7 @@ services:
       - 7000:80
     links:
       - "consul"
+      - "mysql"
       - "finder"
       - "specialist_opinion"      
     depends_on:
@@ -44,6 +46,7 @@ services:
       - 19092:19092
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -55,9 +58,10 @@ services:
     container_name: architecture_probe
     restart: on-failure
     ports:
-      - 19091:19091
+      - 19099:19099
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "finder"
     environment:
@@ -85,11 +89,11 @@ services:
       - "7687:7687"
     volumes:
       - ./volumes/neo4j/:/data/dbms
-  zipkin:
-    image: "openzipkin/zipkin"
-    container_name: zipkin
-    ports:
-      - "9411:9411"
+  #zipkin:
+  #  image: "openzipkin/zipkin"
+  #  container_name: zipkin
+  #  ports:
+  #    - "9411:9411"
   access_manager:
     build: 
       context: ./applications/simulated/java/microservice-access-manager-rest
@@ -100,6 +104,7 @@ services:
       - "10001:10001"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -114,6 +119,7 @@ services:
       - "10003:10003"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -127,6 +133,7 @@ services:
       - "10005:10005"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -140,6 +147,7 @@ services:
       - "10008:10008"
     links:
       - "consul"
+      - "mysql"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
   inventory:
@@ -151,6 +159,7 @@ services:
       - "10009:10009"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -164,6 +173,7 @@ services:
       - "10012:10012"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -175,6 +185,9 @@ services:
     container_name: product
     ports:
       - "10015:10015"
+    links:
+      - "consul"
+      - "mysql"
     depends_on:
       - "consul"
       - "fare"
@@ -189,6 +202,7 @@ services:
       - "10017:10017"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - "consul"
     environment:
@@ -203,6 +217,7 @@ services:
       - "10011:10011"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -217,6 +232,7 @@ services:
       - "10002:10002"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -230,6 +246,7 @@ services:
       - "10006:10006"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -243,6 +260,7 @@ services:
       - "10007:10007"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -256,6 +274,7 @@ services:
       - "10010:10010"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -270,6 +289,7 @@ services:
       - "10013:10013"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -297,6 +317,7 @@ services:
       - "10004:10004"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -333,6 +354,7 @@ services:
   mysql:
     image: mysql:5.7
     restart: always
+    container_name: mysql
     environment:
       MYSQL_DATABASE: 'mc2sea-metrics'
       MYSQL_USER: 'admin'
@@ -344,17 +366,17 @@ services:
       - '3306'
     volumes:
       -  ./volumes/mysql/:/var/lib/mysql
-  influxdb:
-    build: 
-      context: ./applications/influxdb
-    container_name: influxdb
-    env_file: configuration.env
-    ports:
-      - 8086:8086
-      - 8083:8083
-      - 2003:2003
-    volumes:
-      - ./volumes/influxdb:/var/lib/influxdb
+  #influxdb:
+  #  build: 
+  #    context: ./applications/influxdb
+  #  container_name: influxdb
+  #  env_file: configuration.env
+  #  ports:
+  #    - 8086:8086
+  #    - 8083:8083
+  #    - 2003:2003
+  #  volumes:
+  #    - ./volumes/influxdb:/var/lib/influxdb
   telegraf:
     build: 
       context: ./applications/telegraf
