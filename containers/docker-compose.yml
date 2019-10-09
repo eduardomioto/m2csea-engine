@@ -329,9 +329,21 @@ services:
       - POSTGRES_PASSWORD=v07IGCFCF83Z95NX
       - POSTGRES_DB=sonarqube
     volumes:
-      # - volumes/postgres/:/var/lib/postgresql
-      # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
       -  ./volumes/postgres/:/var/lib/postgresql/data
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'mc2sea-metrics'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'admin'
+      MYSQL_ROOT_PASSWORD: 'admin'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      -  ./volumes/mysql/:/var/lib/mysql
   influxdb:
     build: 
       context: ./applications/influxdb
