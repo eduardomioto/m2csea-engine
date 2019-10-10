@@ -128,6 +128,7 @@ services:
     build: 
       context: ./applications/simulated/java/microservice-billing-rest
     image: eduardomioto/rest-billing
+    restart: on-failure
     container_name: billing
     ports:
       - "10005:10005"
@@ -142,6 +143,7 @@ services:
     build:
       context: ./applications/simulated/java/microservice-fare-rest
     image: eduardomioto/rest-fare
+    restart: on-failure
     container_name: fare
     ports:
       - "10008:10008"
@@ -154,6 +156,7 @@ services:
     build: 
       context: ./applications/simulated/java/microservice-inventory-rest
     image: eduardomioto/rest-inventory
+    restart: on-failure
     container_name: inventory
     ports:
       - "10009:10009"
@@ -168,6 +171,7 @@ services:
     build: 
       context: ./applications/simulated/java/microservice-order-rest
     image: eduardomioto/rest-order
+    restart: on-failure
     container_name: order
     ports:
       - "10012:10012"
@@ -182,6 +186,7 @@ services:
     build: 
       context: ./applications/simulated/java/microservice-product-rest
     image: eduardomioto/rest-product
+    restart: on-failure
     container_name: product
     ports:
       - "10015:10015"
@@ -197,6 +202,7 @@ services:
     build: 
       context: ./applications/simulated/java/microservice-user-manager-rest
     image: eduardomioto/rest-user-manager
+    restart: on-failure
     container_name: user_manager
     ports:
       - "10017:10017"
@@ -211,8 +217,8 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-newsletter-rest
     image: eduardomioto/rest-newsletter
-    container_name: newsletter
     restart: on-failure
+    container_name: newsletter
     ports:
       - "10011:10011"
     links:
@@ -226,8 +232,8 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-banner-rest
     image: eduardomioto/rest-banner
-    container_name: banner
     restart: on-failure
+    container_name: banner
     ports:
       - "10002:10002"
     links:
@@ -241,6 +247,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-calendar-rest
     image: eduardomioto/rest-calendar
+    restart: on-failure
     container_name: calendar
     ports:
       - "10006:10006"
@@ -255,6 +262,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-category-rest
     image: eduardomioto/rest-category
+    restart: on-failure
     container_name: category
     ports:
       - "10007:10007"
@@ -269,6 +277,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-mail-relay-rest
     image: eduardomioto/rest-mail-relay
+    restart: on-failure
     container_name: mail_relay
     ports:
       - "10010:10010"
@@ -283,8 +292,8 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-postalcode-rest
     image: eduardomioto/rest-postalcode
-    container_name: postal_code
     restart: on-failure
+    container_name: postal_code
     ports:
       - "10013:10013"
     links:
@@ -298,6 +307,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-supplier-rest
     image: eduardomioto/rest-supplier
+    restart: on-failure
     container_name: supplier
     ports:
       - "10016:10016"
@@ -311,6 +321,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-benefits-rest
     image: eduardomioto/rest-benefits
+    restart: on-failure
     container_name: benefits
     restart: on-failure
     ports:
