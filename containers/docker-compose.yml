@@ -247,7 +247,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-calendar-rest
     image: eduardomioto/rest-calendar
-    restart: on-failure
+    restart: always
     container_name: calendar
     ports:
       - "10006:10006"
@@ -262,7 +262,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-category-rest
     image: eduardomioto/rest-category
-    restart: on-failure
+    restart: always
     container_name: category
     ports:
       - "10007:10007"
@@ -277,7 +277,7 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-mail-relay-rest
     image: eduardomioto/rest-mail-relay
-    restart: on-failure
+    restart: always
     container_name: mail_relay
     ports:
       - "10010:10010"
@@ -307,12 +307,13 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-supplier-rest
     image: eduardomioto/rest-supplier
-    restart: on-failure
+    restart: always
     container_name: supplier
     ports:
       - "10016:10016"
     links:
       - "consul"
+      - "mysql"
     depends_on:
       - consul
     environment:
@@ -323,7 +324,6 @@ services:
     image: eduardomioto/rest-benefits
     restart: on-failure
     container_name: benefits
-    restart: on-failure
     ports:
       - "10004:10004"
     links:

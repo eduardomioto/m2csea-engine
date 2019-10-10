@@ -34,6 +34,16 @@ cd $HOME/m2csea-java-sample-projects/
 
 mvn clean install
 
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-access-manager-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-billing-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-delivery-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-fare-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-inventory-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-order-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-product-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-user-manager-rest/*.jar
+rm $HOME/m2csea-engine/containers/applications/simulated/java/microservice-basket-rest/*.jar
+
 cp /home/admin/m2csea-java-sample-projects/microservice-access-manager-rest/target/microservice-access-manager-rest-1.0.0.jar $HOME/m2csea-engine/containers/applications/simulated/java/microservice-access-manager-rest/
 cp /home/admin/m2csea-java-sample-projects/microservice-billing-rest/target/microservice-billing-rest-1.0.0.jar $HOME/m2csea-engine/containers/applications/simulated/java/microservice-billing-rest/
 cp /home/admin/m2csea-java-sample-projects/microservice-delivery-rest/target/microservice-delivery-rest-1.0.0.jar $HOME/m2csea-engine/containers/applications/simulated/java/microservice-delivery-rest/
