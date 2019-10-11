@@ -1,4 +1,6 @@
 cd $HOME/m2csea-visualizer
 git pull
 npm install
-rsync -avh --progress $HOME/m2csea-visualizer  $HOME/m2csea-engine/containers/applications/visualizer/
+sudo rm -R $HOME/m2csea-engine/containers/volumes/visualizer/
+sudo cp -R $HOME/m2csea-visualizer/static  $HOME/m2csea-engine/containers/volumes/visualizer/
+sudo chmod -R 777 $HOME/m2csea-engine/containers/volumes/visualizer/

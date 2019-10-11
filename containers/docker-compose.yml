@@ -1,4 +1,4 @@
-version: '3.2'
+version: '2.3'
 services:
   finder:
    build: ./applications/finder
@@ -61,6 +61,7 @@ services:
       - 19099:19099
     links:
       - "consul"
+      - "sonarqube"
       - "mysql"
     depends_on:
       - "finder"
@@ -100,6 +101,7 @@ services:
     image: eduardomioto/rest-access-manager
     container_name: access_manager
     restart: on-failure
+    mem_limit: 500MB
     ports:
       - "10001:10001"
     links:
@@ -109,12 +111,14 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   basket:
     build: 
       context: ./applications/simulated/java/microservice-basket-rest
     image: eduardomioto/rest-basket
     container_name: basket
     restart: on-failure
+    mem_limit: 500MB
     ports:
       - "10003:10003"
     links:
@@ -124,11 +128,13 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   billing:
     build: 
       context: ./applications/simulated/java/microservice-billing-rest
     image: eduardomioto/rest-billing
     restart: on-failure
+    mem_limit: 500MB
     container_name: billing
     ports:
       - "10005:10005"
@@ -139,11 +145,13 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   fare:
     build:
       context: ./applications/simulated/java/microservice-fare-rest
     image: eduardomioto/rest-fare
     restart: on-failure
+    mem_limit: 500MB
     container_name: fare
     ports:
       - "10008:10008"
@@ -152,11 +160,13 @@ services:
       - "mysql"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   inventory:
     build: 
       context: ./applications/simulated/java/microservice-inventory-rest
     image: eduardomioto/rest-inventory
     restart: on-failure
+    mem_limit: 500MB
     container_name: inventory
     ports:
       - "10009:10009"
@@ -167,11 +177,13 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   order:
     build: 
       context: ./applications/simulated/java/microservice-order-rest
     image: eduardomioto/rest-order
     restart: on-failure
+    mem_limit: 500MB
     container_name: order
     ports:
       - "10012:10012"
@@ -182,11 +194,13 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   product:
     build: 
       context: ./applications/simulated/java/microservice-product-rest
     image: eduardomioto/rest-product
     restart: on-failure
+    mem_limit: 500MB
     container_name: product
     ports:
       - "10015:10015"
@@ -198,11 +212,13 @@ services:
       - "fare"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   user_manager:
     build: 
       context: ./applications/simulated/java/microservice-user-manager-rest
     image: eduardomioto/rest-user-manager
     restart: on-failure
+    mem_limit: 500MB
     container_name: user_manager
     ports:
       - "10017:10017"
@@ -213,11 +229,13 @@ services:
       - "consul"
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
   newsletter:
     build: 
       context: ./applications/simulated/node/microservice-newsletter-rest
     image: eduardomioto/rest-newsletter
     restart: on-failure
+    mem_limit: 500MB
     container_name: newsletter
     ports:
       - "10011:10011"
@@ -232,7 +250,8 @@ services:
     build: 
       context: ./applications/simulated/node/microservice-banner-rest
     image: eduardomioto/rest-banner
-    restart: on-failure
+    restart: always
+    mem_limit: 500MB
     container_name: banner
     ports:
       - "10002:10002"
@@ -248,6 +267,7 @@ services:
       context: ./applications/simulated/node/microservice-calendar-rest
     image: eduardomioto/rest-calendar
     restart: always
+    mem_limit: 500MB
     container_name: calendar
     ports:
       - "10006:10006"
@@ -263,6 +283,7 @@ services:
       context: ./applications/simulated/node/microservice-category-rest
     image: eduardomioto/rest-category
     restart: always
+    mem_limit: 500MB
     container_name: category
     ports:
       - "10007:10007"
@@ -273,56 +294,57 @@ services:
       - consul
     environment:
       - CONSUL_URL=consul
-  mail_relay:
-    build: 
-      context: ./applications/simulated/node/microservice-mail-relay-rest
-    image: eduardomioto/rest-mail-relay
-    restart: always
-    container_name: mail_relay
-    ports:
-      - "10010:10010"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  postal_code:
-    build: 
-      context: ./applications/simulated/node/microservice-postalcode-rest
-    image: eduardomioto/rest-postalcode
-    restart: on-failure
-    container_name: postal_code
-    ports:
-      - "10013:10013"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  supplier:
-    build: 
-      context: ./applications/simulated/node/microservice-supplier-rest
-    image: eduardomioto/rest-supplier
-    restart: always
-    container_name: supplier
-    ports:
-      - "10016:10016"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
+  #mail_relay:
+  #  build: 
+  #    context: ./applications/simulated/node/microservice-mail-relay-rest
+  #  image: eduardomioto/rest-mail-relay
+  #  restart: always
+  #  container_name: mail_relay
+  #  ports:
+  #    - "10010:10010"
+  #  links:
+  #    - "consul"
+  #    - "mysql"
+  #  depends_on:
+  #    - consul
+  #  environment:
+  #    - CONSUL_URL=consul
+  #postal_code:
+  #  build: 
+  #    context: ./applications/simulated/node/microservice-postalcode-rest
+  #  image: eduardomioto/rest-postalcode
+  #  restart: on-failure
+  #  container_name: postal_code
+  #  ports:
+  #    - "10013:10013"
+  #  links:
+  #    - "consul"
+  #    - "mysql"
+  #  depends_on:
+  #    - consul
+  #  environment:
+  #    - CONSUL_URL=consul
+  #supplier:
+  #  build: 
+  #    context: ./applications/simulated/node/microservice-supplier-rest
+  #  image: eduardomioto/rest-supplier
+  #  restart: always
+  #  container_name: supplier
+  #  ports:
+  #    - "10016:10016"
+  #  links:
+  #    - "consul"
+  #    - "mysql"
+  #  depends_on:
+  #    - consul
+  #  environment:
+  #    - CONSUL_URL=consul
   benefits:
     build: 
       context: ./applications/simulated/node/microservice-benefits-rest
     image: eduardomioto/rest-benefits
     restart: on-failure
+    mem_limit: 500MB
     container_name: benefits
     ports:
       - "10004:10004"
