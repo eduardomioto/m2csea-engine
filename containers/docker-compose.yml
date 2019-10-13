@@ -90,11 +90,6 @@ services:
       - "7687:7687"
     volumes:
       - ./volumes/neo4j/:/data/dbms
-  #zipkin:
-  #  image: "openzipkin/zipkin"
-  #  container_name: zipkin
-  #  ports:
-  #    - "9411:9411"
   access_manager:
     build: 
       context: ./applications/simulated/java/microservice-access-manager-rest
@@ -294,52 +289,7 @@ services:
       - consul
     environment:
       - CONSUL_URL=consul
-  #mail_relay:
-  #  build: 
-  #    context: ./applications/simulated/node/microservice-mail-relay-rest
-  #  image: eduardomioto/rest-mail-relay
-  #  restart: always
-  #  container_name: mail_relay
-  #  ports:
-  #    - "10010:10010"
-  #  links:
-  #    - "consul"
-  #    - "mysql"
-  #  depends_on:
-  #    - consul
-  #  environment:
-  #    - CONSUL_URL=consul
-  #postal_code:
-  #  build: 
-  #    context: ./applications/simulated/node/microservice-postalcode-rest
-  #  image: eduardomioto/rest-postalcode
-  #  restart: on-failure
-  #  container_name: postal_code
-  #  ports:
-  #    - "10013:10013"
-  #  links:
-  #    - "consul"
-  #    - "mysql"
-  #  depends_on:
-  #    - consul
-  #  environment:
-  #    - CONSUL_URL=consul
-  #supplier:
-  #  build: 
-  #    context: ./applications/simulated/node/microservice-supplier-rest
-  #  image: eduardomioto/rest-supplier
-  #  restart: always
-  #  container_name: supplier
-  #  ports:
-  #    - "10016:10016"
-  #  links:
-  #    - "consul"
-  #    - "mysql"
-  #  depends_on:
-  #    - consul
-  #  environment:
-  #    - CONSUL_URL=consul
-  benefits:
+    benefits:
     build: 
       context: ./applications/simulated/node/microservice-benefits-rest
     image: eduardomioto/rest-benefits
@@ -399,17 +349,6 @@ services:
       - '3306'
     volumes:
       -  ./volumes/mysql/:/var/lib/mysql
-  #influxdb:
-  #  build: 
-  #    context: ./applications/influxdb
-  #  container_name: influxdb
-  #  env_file: configuration.env
-  #  ports:
-  #    - 8086:8086
-  #    - 8083:8083
-  #    - 2003:2003
-  #  volumes:
-  #    - ./volumes/influxdb:/var/lib/influxdb
   telegraf:
     build: 
       context: ./applications/telegraf
