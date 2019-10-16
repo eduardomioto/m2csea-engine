@@ -63,10 +63,7 @@ services:
       - "consul"
       - "sonarqube"
       - "mysql"
-    depends_on:
-      - "finder"
     environment:
-      - "FINDER_URL=finder"
       - "NGINX_PORT=80"
   consul:
     image: "progrium/consul"
@@ -289,7 +286,7 @@ services:
       - consul
     environment:
       - CONSUL_URL=consul
-    benefits:
+  benefits:
     build: 
       context: ./applications/simulated/node/microservice-benefits-rest
     image: eduardomioto/rest-benefits
