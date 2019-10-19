@@ -97,6 +97,8 @@ services:
       - "7687:7687"
     volumes:
       - ./volumes/neo4j/:/data/dbms
+  #acabd57e73d5c90b2970ceb792790df34993f59a  
+  # api token: d9ff9177032c82b1664f28bf1d6cc9cbe7c823a2  
   sonarqube:
     build:
       context: ./applications/sonar

@@ -302,7 +302,8 @@ services:
       - consul
     environment:
       - CONSUL_URL=consul
-  #acabd57e73d5c90b2970ceb792790df34993f59a    
+  #acabd57e73d5c90b2970ceb792790df34993f59a  
+  # api token: d9ff9177032c82b1664f28bf1d6cc9cbe7c823a2  
   sonarqube:
     build:
       context: ./applications/sonar
