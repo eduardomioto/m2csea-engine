@@ -1,0 +1,11 @@
+version: "3"
+services:
+  docker-stats:
+    build:
+      context: ./applications/docker-stats
+    restart: unless-stopped
+    container_name: docker-stats
+networks:
+  default:
+    external:
+      name: ci

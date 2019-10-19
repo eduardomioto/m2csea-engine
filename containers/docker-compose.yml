@@ -1,20 +1,21 @@
 version: '2.3'
 services:
   finder:
-   build: ./applications/finder
-   image: eduardomioto/finder
-   container_name: finder
-   restart: always
-   ports:
+    build: ./applications/finder
+    image: eduardomioto/finder
+    container_name: finder
+    restart: always
+    ports:
      - 19100:19100
-   links:
+    links:
      - "consul"
      - "mysql"
      - "neo4j"
-   depends_on:
+    depends_on:
      - "consul"
      - "neo4j"
-   environment:
+     - "mysql"
+    environment:
      - "SPRING_PROFILES_ACTIVE=dev"
   visualizer:
     build:
@@ -38,12 +39,12 @@ services:
       - ./volumes/visualizer/:/usr/share/nginx/html
   specialist_opinion:
     build:
-      context: ./applications/specialist-opinion
+     context: ./applications/specialist-opinion
     image: eduardomioto/specialist-opinion
     container_name: specialist_opinion
     restart: on-failure
     ports:
-      - 19092:19092
+      - 19192:19192
     links:
       - "consul"
       - "mysql"
@@ -64,7 +65,16 @@ services:
       - "sonarqube"
       - "mysql"
     environment:
-      - "NGINX_PORT=80"
+      - docker-stats=host.docker.internal
+  #
+  #
+  #
+  #
+  #
+  #
+  #
+  #
+  #    
   consul:
     image: "progrium/consul"
     restart: always
@@ -87,228 +97,11 @@ services:
       - "7687:7687"
     volumes:
       - ./volumes/neo4j/:/data/dbms
-  access_manager:
-    build: 
-      context: ./applications/simulated/java/microservice-access-manager-rest
-    image: eduardomioto/rest-access-manager
-    container_name: access_manager
-    restart: on-failure
-    mem_limit: 500MB
-    ports:
-      - "10001:10001"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  basket:
-    build: 
-      context: ./applications/simulated/java/microservice-basket-rest
-    image: eduardomioto/rest-basket
-    container_name: basket
-    restart: on-failure
-    mem_limit: 500MB
-    ports:
-      - "10003:10003"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  billing:
-    build: 
-      context: ./applications/simulated/java/microservice-billing-rest
-    image: eduardomioto/rest-billing
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: billing
-    ports:
-      - "10005:10005"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  fare:
-    build:
-      context: ./applications/simulated/java/microservice-fare-rest
-    image: eduardomioto/rest-fare
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: fare
-    ports:
-      - "10008:10008"
-    links:
-      - "consul"
-      - "mysql"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  inventory:
-    build: 
-      context: ./applications/simulated/java/microservice-inventory-rest
-    image: eduardomioto/rest-inventory
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: inventory
-    ports:
-      - "10009:10009"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  order:
-    build: 
-      context: ./applications/simulated/java/microservice-order-rest
-    image: eduardomioto/rest-order
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: order
-    ports:
-      - "10012:10012"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  product:
-    build: 
-      context: ./applications/simulated/java/microservice-product-rest
-    image: eduardomioto/rest-product
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: product
-    ports:
-      - "10015:10015"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-      - "fare"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  user_manager:
-    build: 
-      context: ./applications/simulated/java/microservice-user-manager-rest
-    image: eduardomioto/rest-user-manager
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: user_manager
-    ports:
-      - "10017:10017"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - "consul"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
-  newsletter:
-    build: 
-      context: ./applications/simulated/node/microservice-newsletter-rest
-    image: eduardomioto/rest-newsletter
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: newsletter
-    ports:
-      - "10011:10011"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  banner:
-    build: 
-      context: ./applications/simulated/node/microservice-banner-rest
-    image: eduardomioto/rest-banner
-    restart: always
-    mem_limit: 500MB
-    container_name: banner
-    ports:
-      - "10002:10002"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  calendar:
-    build: 
-      context: ./applications/simulated/node/microservice-calendar-rest
-    image: eduardomioto/rest-calendar
-    restart: always
-    mem_limit: 500MB
-    container_name: calendar
-    ports:
-      - "10006:10006"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  category:
-    build: 
-      context: ./applications/simulated/node/microservice-category-rest
-    image: eduardomioto/rest-category
-    restart: always
-    mem_limit: 500MB
-    container_name: category
-    ports:
-      - "10007:10007"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  benefits:
-    build: 
-      context: ./applications/simulated/node/microservice-benefits-rest
-    image: eduardomioto/rest-benefits
-    restart: on-failure
-    mem_limit: 500MB
-    container_name: benefits
-    ports:
-      - "10004:10004"
-    links:
-      - "consul"
-      - "mysql"
-    depends_on:
-      - consul
-    environment:
-      - CONSUL_URL=consul
-  #acabd57e73d5c90b2970ceb792790df34993f59a    
   sonarqube:
     build:
       context: ./applications/sonar
     restart: unless-stopped
     container_name: sonarqube
-  #  command: -Dhttp.proxyHost=proxy.whebdc.com.br -Dhttp.proxyPort=3128 -Dhttp.proxyUser=topologia -Dhttp.proxyPassword=Philips.2017
     environment:
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=v07IGCFCF83Z95NX
@@ -336,7 +129,7 @@ services:
     restart: always
     container_name: mysql
     environment:
-      MYSQL_DATABASE: 'mc2sea-metrics'
+      MYSQL_DATABASE: 'm2csea-metrics'
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
       MYSQL_ROOT_PASSWORD: 'admin'
@@ -346,36 +139,177 @@ services:
       - '3306'
     volumes:
       -  ./volumes/mysql/:/var/lib/mysql
-  telegraf:
+  #
+  #
+  #
+  #
+  #
+  #
+  #
+  access_manager:
     build: 
-      context: ./applications/telegraf
-    container_name: telegraf
+      context: ./applications/simulated/java/microservice-access-manager-rest
+    image: eduardomioto/rest-access-manager
+    container_name: access_manager
+    restart: on-failure
+    mem_limit: 1000MB
     ports:
-      - 9126:9126
-      - 8094:8094
-    image: telegraf
-    restart: always
-    environment:
-      HOST_PROC: /rootfs/proc
-      HOST_SYS: /rootfs/sys
-      HOST_ETC: /rootfs/etc
-    hostname: localhost
-    volumes:
-     - ./applications/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-     - /var/run/docker.sock:/var/run/docker.sock:ro
-     - /sys:/rootfs/sys:ro
-     - /proc:/rootfs/proc:ro
-     - /etc:/rootfs/etc:ro
-  prometheus:
-    build: 
-      context: ./applications/prometheus
-    container_name: prometheus
-    ports:
-      - 8091:9090
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml   
+      - "10001:10001"
+    links:
+      - "consul"
+      - "mysql"
     depends_on:
-      - telegraf
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
+  fare:
+    build:
+      context: ./applications/simulated/java/microservice-fare-rest
+    image: eduardomioto/rest-fare
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: fare
+    ports:
+      - "10008:10008"
+    links:
+      - "consul"
+      - "mysql"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
+  order:
+    build: 
+      context: ./applications/simulated/java/microservice-order-rest
+    image: eduardomioto/rest-order
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: order
+    ports:
+      - "10012:10012"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
+  product:
+    build: 
+      context: ./applications/simulated/java/microservice-product-rest
+    image: eduardomioto/rest-product
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: product
+    ports:
+      - "10015:10015"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - "consul"
+      - "fare"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
+  user_manager:
+    build: 
+      context: ./applications/simulated/java/microservice-user-manager-rest
+    image: eduardomioto/rest-user-manager
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: user_manager
+    ports:
+      - "10017:10017"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - "consul"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1"
+  newsletter:
+    build: 
+      context: ./applications/simulated/node/microservice-newsletter-rest
+    image: eduardomioto/rest-newsletter
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: newsletter
+    ports:
+      - "10011:10011"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  banner:
+    build: 
+      context: ./applications/simulated/node/microservice-banner-rest
+    image: eduardomioto/rest-banner
+    restart: always
+    mem_limit: 1000MB
+    container_name: banner
+    ports:
+      - "10002:10002"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  calendar:
+    build: 
+      context: ./applications/simulated/node/microservice-calendar-rest
+    image: eduardomioto/rest-calendar
+    restart: always
+    mem_limit: 1000MB
+    container_name: calendar
+    ports:
+      - "10006:10006"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  category:
+    build: 
+      context: ./applications/simulated/node/microservice-category-rest
+    image: eduardomioto/rest-category
+    restart: always
+    mem_limit: 1000MB
+    container_name: category
+    ports:
+      - "10007:10007"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
+  benefits:
+    build: 
+      context: ./applications/simulated/node/microservice-benefits-rest
+    image: eduardomioto/rest-benefits
+    restart: on-failure
+    mem_limit: 1000MB
+    container_name: benefits
+    ports:
+      - "10004:10004"
+    links:
+      - "consul"
+      - "mysql"
+    depends_on:
+      - consul
+    environment:
+      - CONSUL_URL=consul
 networks:
   default:
     external:
