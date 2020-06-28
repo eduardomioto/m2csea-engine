@@ -1,4 +1,4 @@
 FROM telegraf
-LABEL maintainer=Philips
+LABEL maintainer=eduardo.mioto
 
 COPY telegraf.conf /etc/telegraf/telegraf.conf

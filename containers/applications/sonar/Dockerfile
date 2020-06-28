@@ -1,8 +1,5 @@
 FROM sonarqube:6.7.1
 
-#ENV http_proxy http://topologia:Philips.2017@proxy.whebdc.com.br:3128
-#ENV https_proxy http://topologia:Philips.2017@proxy.whebdc.com.br:3128
-
 #Bundled plugins
 ENV JAVA_PLUGIN_VERSION=4.13.0.11627 \
 	CSHARP_PLUGIN_VERSION=6.4.0.3347 \
@@ -22,8 +19,3 @@ ENV FINDBUGS_PLUGIN_VERSION=3.5.0 \
 	GITHUB_PLUGIN_VERSION=1.4.1.822 \
 	JDEPEND_PLUGIN_VERSION=1.1.1 \
 	GITLAB_PLUGIN_VERSION=2.1.0
-	
-# 3f4f1daad29656b4fb95ad43b4ccbe7e46f072c2
-#./gradlew sonarqube \
-#  -Dsonar.host.url=http://bifrost-ci.whebdc.com.br:9000 \
-#  -Dsonar.login=3f4f1daad29656b4fb95ad43b4ccbe7e46f072c2

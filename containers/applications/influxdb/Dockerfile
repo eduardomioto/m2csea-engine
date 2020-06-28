@@ -1,5 +1,5 @@
 FROM influxdb
-LABEL maintainer=Philips
+LABEL maintainer=eduardo.mioto
 
 WORKDIR /app
 COPY entrypoint.sh ./

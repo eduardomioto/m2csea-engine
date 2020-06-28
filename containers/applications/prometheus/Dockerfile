@@ -1,4 +1,4 @@
 FROM prom/prometheus:latest
-LABEL maintainer=Philips
+LABEL maintainer=eduardo.mioto
 
 COPY prometheus.yml /etc/prometheus/prometheus.yml
