@@ -1,6 +1,5 @@
 M2CSEA - Engine Module
 --------------
-[![Build Status](https://travis-ci.org/eduardomioto/mc2pd-engine.svg?branch=master)](https://travis-ci.org/eduardomioto/mc2pd-engine)
 
 ##### Introduction
 Technologies Involved 
