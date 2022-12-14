@@ -9,7 +9,7 @@
     "browser-process-hrtime": "^0.1.2",
     "consul": "0.29.0",
     "ejs": "^2.5.2",
-    "express": "^4.14.0",
+    "express": "^4.17.3",
     "request": "^2.79.0",
     "zipkin": "^0.10.1"
   }
